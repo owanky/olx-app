@@ -1,23 +1,55 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {Badge, Figure, ListGroup} from "react-bootstrap";
+import {Badge, Button, Card, Figure, Form, ListGroup, Stack} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 
 const List = () => {
     const [list, setList] = useState([]);
+    const [title, setTitle] = useState("");
+    const [search, setSearch] = useState();
+
+    const handleTitle = (e) => {
+        setTitle(e.target.value);
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setSearch(title);
+    }
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axios.get("/adverts");
+            const response = await axios.get(`/adverts`, {params: { title_like: search }});
             //console.log(response.data);
             setList(response.data);
         }
         fetchData();
-    }, []);
+    }, [search]);
+
 
 
     return (
         <div>
+
+            <Card className="my-3" body>
+                <Form onSubmit={handleSubmit}>
+                    <Stack direction="horizontal" gap={3}>
+                        <Form.Group controlId="search">
+                            <Form.Control
+                                type="text"
+                                onChange={handleTitle}
+                                value={title}
+                                placeholder="Wpisz.."
+                            />
+                        </Form.Group>
+                        <Button variant="primary" type="submit">
+                            Wyszukaj
+                        </Button>
+                    </Stack>
+                </Form>
+            </Card>
+
+
             <ListGroup>
 
 
@@ -34,7 +66,7 @@ const List = () => {
                                         width={171}
                                         height={180}
                                         alt="171x180"
-                                        src={advert.image}
+                                        src={`${advert.image}?t=${advert.id}`}
                                     />
                                 </Figure>
                                 <div className="ms-2 me-auto p-2">
