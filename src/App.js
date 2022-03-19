@@ -36,7 +36,9 @@ function App() { //odswiezane co render
           <Routes>
             <Route path="/" element={<h1>Hello</h1>}/>
             <Route path="/list" element={<List/>}/>
-            <Route path="/detail" element={<Detail/>}/>
+            <Route path="/detail">
+             <Route path={':id'} element ={<Detail/>}/>
+            </Route>
           </Routes>
         </Container>
       </BrowserRouter>

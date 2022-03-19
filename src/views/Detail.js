@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Badge, Button, Card, Figure, ListGroup} from "react-bootstrap";
 import axios from "axios";
+import {useParams} from "react-router-dom";
 
-const Detail = () => {
+const Detail = (props) => {
     const [detail, setDetail] = useState([]);
-
+    const {id} = useParams();
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axios.get("/adverts/5");
+            const response = await axios.get(`/adverts/${id}`);
             //console.log(response.data);
             setDetail(response.data);
         }
