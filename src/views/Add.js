@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import * as yup from 'yup';
 import {Formik} from "formik";
 import {Button, Col, InputGroup, Row, Form} from "react-bootstrap";
+import axios from "axios";
 
 
 const schema = yup.object().shape({
@@ -10,11 +11,21 @@ const schema = yup.object().shape({
     description: yup.string().required(),
     seller: yup.string().required(),
     sellerPhone: yup.string().required(),
-    canNegotiate: yup.bool()
+    canNegotiate: yup.bool(),
+    category: yup.string().required(),
 });
 
 
 const Add = () => {
+    const [list, setList] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await axios.get(`/categories`);
+            //console.log(response.data);
+            setList(response.data);
+        }
+        fetchData();
+    }, []);
     return (
         <Formik
             validationSchema={schema}
@@ -26,6 +37,7 @@ const Add = () => {
                 seller: '',
                 sellerPhone: '',
                 canNegotiate: false,
+                category: ''
             }}
         >
             {({
@@ -67,6 +79,29 @@ const Add = () => {
                             />
                             <Form.Control.Feedback type="invalid">
                                 {errors.price}
+                            </Form.Control.Feedback>
+
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+
+
+                        <Form.Group as={Col} md="4" controlId="validationFormik02">
+                            <Form.Label>Category</Form.Label>
+                            <Form.Select
+                                aria-label="Default select example"
+                                name="category"
+                                value={values.lastName}
+                                onChange={handleChange}
+                                isValid={touched.category && !errors.category}
+                                isInvalid={!!errors.category}
+                            >
+                                <option value="">-</option>
+                                {list.map((category) => (
+                                    <option value={category.id} key={category.id}>{category.title}</option>
+                                ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                                {errors.category}
                             </Form.Control.Feedback>
 
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -116,7 +151,7 @@ const Add = () => {
                                 type="text"
                                 placeholder="description"
                                 aria-describedby="inputGroupPrepend"
-                                as = "textarea"
+                                as="textarea"
                                 name="description"
                                 value={values.description}
                                 onChange={handleChange}
