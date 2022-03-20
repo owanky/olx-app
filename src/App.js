@@ -5,6 +5,7 @@ import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
 import {LinkContainer} from "react-router-bootstrap";
 import List from "./views/List";
 import Detail from "./views/Detail";
+import Add from "./views/Add";
 
 
 //raz wykonywane przy stracie
@@ -24,9 +25,10 @@ function App() { //odswiezane co render
               <LinkContainer to="/list">
                 <Nav.Link>List</Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/detail">
-                <Nav.Link>Detail</Nav.Link>
-              </LinkContainer>
+
+                <LinkContainer to="/add">
+                    <Nav.Link>Add</Nav.Link>
+                </LinkContainer>
             </Nav>
           </Container>
         </Navbar>
@@ -39,12 +41,12 @@ function App() { //odswiezane co render
             <Route path="/detail">
              <Route path={':id'} element ={<Detail/>}/>
             </Route>
+              <Route path="/add" element={<Add/>}/>
           </Routes>
         </Container>
       </BrowserRouter>
 
   );
 }
-
 export default App;
 
