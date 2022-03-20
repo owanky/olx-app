@@ -14,8 +14,18 @@ const schema = yup.object().shape({
     sellerPhone: yup.string().required(),
     canNegotiate: yup.bool(),
     category: yup.string().required(),
-
 });
+
+const initialValues= {
+    title: '',
+    price: '',
+    description: '',
+    image: 'http://placeimg.com/400/400/business',
+    seller: '',
+    sellerPhone: '',
+    canNegotiate: false,
+    category: ''
+}
 
 
 const Add = () => {
@@ -40,16 +50,8 @@ const Add = () => {
         <Formik
             validationSchema={schema}
             onSubmit={handleFormSubmit}
-            initialValues={{
-                title: '',
-                price: '',
-                description: '',
-                image: 'http://placeimg.com/400/400/business',
-                seller: '',
-                sellerPhone: '',
-                canNegotiate: false,
-                category: ''
-            }}
+            initialValues={initialValues}
+            enableReinitialize
         >
             {({
                   handleSubmit,

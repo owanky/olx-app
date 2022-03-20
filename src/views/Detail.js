@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Badge, Button, Card, Figure, ListGroup} from "react-bootstrap";
+import {Button, Card} from "react-bootstrap";
 import axios from "axios";
 import {useParams} from "react-router-dom";
+import {LinkContainer} from "react-router-bootstrap";
 
 const Detail = (props) => {
     const [detail, setDetail] = useState([]);
@@ -25,7 +26,9 @@ const Detail = (props) => {
                         <Card.Text>
                             {detail.description}
                         </Card.Text>
-                        <Button variant="primary">Kup</Button>
+                        <LinkContainer to={`/detail/${id}/edit`}>
+                            <Button type="submit">Edit</Button>
+                        </LinkContainer>
                     </Card.Body>
                 </Card>
             </div>
