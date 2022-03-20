@@ -19,7 +19,7 @@ const List = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axios.get(`/adverts`, {params: { title_like: search }});
+            const response = await axios.get(`/adverts`, {params: { title_like: search, _sort: "createdOn", _order: "desc" }});
             //console.log(response.data);
             setList(response.data);
         }
@@ -76,7 +76,7 @@ const List = () => {
                                 </div>
 
                                 <Badge bg="danger" pill>
-                                    <h4>${advert.price}</h4>
+                                    <h4>{advert.price?`$${advert.price}`:"for free"}</h4>
                                 </Badge>
 
                             </ListGroup.Item>
