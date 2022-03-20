@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import {Formik} from "formik";
 import {Button, Col, InputGroup, Row, Form} from "react-bootstrap";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 
 const schema = yup.object().shape({
@@ -13,11 +14,13 @@ const schema = yup.object().shape({
     sellerPhone: yup.string().required(),
     canNegotiate: yup.bool(),
     category: yup.string().required(),
+
 });
 
 
 const Add = () => {
     const [list, setList] = useState([]);
+    const navigate = useNavigate()
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.get(`/categories`);
@@ -26,14 +29,22 @@ const Add = () => {
         }
         fetchData();
     }, []);
+    const handleFormSubmit = async (values) => {
+        const request = {...values,createdOn: new Date().toISOString()}
+        const response= await axios.post('/adverts', request);
+        const id = response.data.id;
+        navigate(`/detail/${id}`);
+
+    }
     return (
         <Formik
             validationSchema={schema}
-            onSubmit={(e) => console.log(e)}
+            onSubmit={handleFormSubmit}
             initialValues={{
                 title: '',
                 price: '',
                 description: '',
+                image: 'http://placeimg.com/400/400/business',
                 seller: '',
                 sellerPhone: '',
                 canNegotiate: false,
