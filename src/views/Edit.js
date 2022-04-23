@@ -6,6 +6,7 @@ import {Formik} from "formik";
 import * as yup from "yup";
 import {useNavigate} from "react-router-dom";
 import {LinkContainer} from "react-router-bootstrap";
+import {useFetchData} from "../hooks/useFetchData";
 
 const schema = yup.object().shape({
     title: yup.string().required().max(50),
@@ -30,29 +31,12 @@ const initialValues = {
 
 
 const Edit = () => {
-    const [detail, setDetail] = useState([]);
-    const [list, setList] = useState([]);
     const navigate = useNavigate()
     const {id} = useParams();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await axios.get(`/adverts/${id}`);
-            //console.log(response.data);
-            setDetail(response.data);
-        }
-        fetchData();
-    }, [id]);
+    const detail = useFetchData(`/adverts/${id}`, []);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await axios.get(`/categories`);
-            //console.log(response.data);
-            setList(response.data);
-        }
-        fetchData();
-    }, []);
-
+    const list = useFetchData(`/categories`, []);
     const handleFormSubmit = async (values) => {
         await axios.put(`/adverts/${id}`, values);
         navigate(`/detail/${id}`);

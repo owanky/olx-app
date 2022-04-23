@@ -4,6 +4,7 @@ import {Formik} from "formik";
 import {Button, Col, InputGroup, Row, Form} from "react-bootstrap";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import {useFetchData} from "../hooks/useFetchData";
 
 
 const schema = yup.object().shape({
@@ -29,16 +30,10 @@ const initialValues= {
 
 
 const Add = () => {
-    const [list, setList] = useState([]);
+
     const navigate = useNavigate()
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await axios.get(`/categories`);
-            //console.log(response.data);
-            setList(response.data);
-        }
-        fetchData();
-    }, []);
+
+    const list = useFetchData(`/categories`, []);
     const handleFormSubmit = async (values) => {
         const request = {...values,createdOn: new Date().toISOString()}
         const response= await axios.post('/adverts', request);
