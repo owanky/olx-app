@@ -3,14 +3,16 @@ import {Button, Card, Modal} from "react-bootstrap";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import {LinkContainer} from "react-router-bootstrap";
+import {useFetchData} from "../hooks/useFetchData";
+
 
 const Detail = (props) => {
     const [show, setShow] = useState(false);
-    const [detail, setDetail] = useState([]);
+    // const [detail, setDetail] = useState([]);
     const navigate = useNavigate()
 
     const {id} = useParams();
-
+/*
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.get(`/adverts/${id}`);
@@ -19,7 +21,8 @@ const Detail = (props) => {
         }
         fetchData();
     }, [id]);
-
+*/
+    const detail = useFetchData(`/adverts/${id}`, []);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
