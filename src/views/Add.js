@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import * as yup from 'yup';
 import {Formik} from "formik";
 import {Button, Col, InputGroup, Row, Form} from "react-bootstrap";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useFetchData} from "../hooks/useFetchData";
+import {User} from "../providers/UserProvider";
 
 
 const schema = yup.object().shape({
@@ -17,19 +18,22 @@ const schema = yup.object().shape({
     category: yup.string().required(),
 });
 
-const initialValues= {
-    title: '',
-    price: '',
-    description: '',
-    image: 'http://placeimg.com/400/400/business',
-    seller: '',
-    sellerPhone: '',
-    canNegotiate: false,
-    category: ''
-}
+
 
 
 const Add = () => {
+    const user = useContext(User);
+
+    const initialValues= {
+        title: '',
+        price: '',
+        description: '',
+        image: 'http://placeimg.com/400/400/business',
+        seller: user?.name || "",
+        sellerPhone: user?.userPhone || "",
+        canNegotiate: false,
+        category: ''
+    }
 
     const navigate = useNavigate()
 
@@ -139,7 +143,7 @@ const Add = () => {
                                 type="text"
                                 placeholder="sellerPhone"
                                 name="sellerPhone"
-                                value={values.state}
+                                value={values.sellerPhone}
                                 onChange={handleChange}
                                 isInvalid={!!errors.sellerPhone}
                             />
